@@ -97,8 +97,7 @@ function showInfo(data, tabletop) {
 	$.each(questions, function(i, ox) {
 		addQuestion(ox.Question, ox.Result === "O");
 	});
-	
-	setRefreshButtonTooltip(questions);
+
 	setEnabled(true);
 	focusSearchBar();
 }
