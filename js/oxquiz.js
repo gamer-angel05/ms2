@@ -77,6 +77,7 @@ function addQuestion(question, result) {
 	ox_li.appendTo("#ox_table");
 }
 
+var lastTimestamp;
 function showInfo(data, tabletop) {
 	var flags = {};
 
@@ -95,6 +96,7 @@ function showInfo(data, tabletop) {
 
 	$.each(questions, function(i, ox) {
 		addQuestion(ox.Question, ox.Answer === "TRUE");
+		lastTimestamp = ox.Timestamp;
 	});
 
 	setRefreshButtonTooltip(questions);
@@ -110,7 +112,7 @@ function setRefreshButtonTooltip(questions) {
 		refreshButtonTooltipFormat = $refreshButton.attr("data-original-title");
 	}
 	
-	$refreshButton.attr("title", refreshButtonTooltipFormat.format(questions.length, questions.filter(q => q.Answer === "TRUE").length, questions.filter(q => q.Answer === "FALSE").length))
+	$refreshButton.attr("title", refreshButtonTooltipFormat.format(lastTimestamp, questions.length, questions.filter(q => q.Answer === "TRUE").length, questions.filter(q => q.Answer === "FALSE").length))
 				  .tooltip("_fixTitle");
 }
 
