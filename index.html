@@ -5,16 +5,20 @@
   	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   	<link rel="stylesheet" href="css/style.css">
-
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<div class="container">
-	 	<h1>Maplestory 2 - Ox quiz</h1>
-		<p>Add more phrases answers here: {Link}</p> 
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js" integrity="sha384-huj6zO6Ls5sr175tOLEbT6/i1gFS/S+m2KmgHxvohbvzymAjrcxcknjXrgfCfrYI" crossorigin="anonymous"></script>
+  	<script src="js/utils.js" defer></script>
+  	<script src="js/oxquiz.js" defer></script>
+
+	<div class="container header">
+		<h1>Maple Ox quiz</h1>
+		<p>If your answer is missing, take a screenshot in-game and submit it <a target="blank" href="https://goo.gl/forms/p7AO101hiXv5hcWA2">here.</a> All credits to <a target="blank" href="https://miyuyami.github.io/ms2/ox.html">Miyuyami</a></p>
 	</div>
 
 	<div class="container" lang="en">
@@ -22,15 +26,13 @@
 			<div class="input-group">
 				<input id="ox_search" class="form-control" type="text" onkeyup="search();" onfocusout="focusSearchBar();">
 				<div class="input-group-append">
-					<button id="ox_search_button" class="btn btn-primary" type="button" onclick="handleSearchClick();">Search</button>
+					<button id="ox_search_button" class="btn btn-primary" type="button" onclick="handleSearchClick();" title="Loaded entries: {0}<br>True: {1}<br>False: {2}" data-toggle="tooltip" data-placement="bottom" data-html="true">Search</button>
 				</div>
 			</div>
 		</form>
 		
 		<ul id="ox_table" class="list-group mt-3"></div>
 	</div>
-
-	<script src="js/oxquiz.js" defer></script>
 
 </body>
 </html>

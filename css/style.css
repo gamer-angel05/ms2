@@ -1,3 +1,15 @@
-.body {
-	background-color: #73737D !important;
+body {
+	padding-top: 50px;
+	padding-bottom: 20px;
+	background-color: #4A4A50;
+}
+
+.header {
+	color: #FFFFFF;
+}
+a {
+	color: #49C0FB;
+}
+a:hover {
+	color: #3A9AC9;
 }

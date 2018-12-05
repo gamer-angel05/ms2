@@ -29,7 +29,7 @@ function setEnabled(isEnabled) {
 	if (isEnabled) {
 		placeholderSearchText = "Type at least a word with at least 3 letters...";
 	} else {
-		placeholderSearchText = "loading questions...";
+		placeholderSearchText = "Loading questions...";
 	}
 	
 	$("#ox_search").attr("placeholder", placeholderSearchText);
@@ -46,7 +46,7 @@ function focusSearchBar() {
 	$("#ox_search").focus();
 }
 
-var publicSpreadsheetUrl = "https://docs.google.com/spreadsheets/d/1ZNo8-DPNOycviPd-h8n-SabhqWjJoM8a8MxLlwQ-6lY/edit?usp=sharing";
+var publicSpreadsheetUrl = "https://docs.google.com/spreadsheets/d/1b13hzm7voMdrloHWrHiVh8yMXebCS70OGcEg0fXkipI/pubhtml";
 function init() {
     $("[data-toggle=\"tooltip\"]").tooltip().tooltip("hide"); 
 	setEnabled(false);
@@ -54,7 +54,7 @@ function init() {
 	
 	Tabletop.init({ key: publicSpreadsheetUrl,
 					callback: showInfo,
-					wanted: [ "OX" ] });
+					simpleSheet: true });
 }
 
 function reloadData() {
@@ -72,17 +72,16 @@ function addQuestion(question, result) {
 	} else {
 		ox_li = $("<li class=\"list-group-item list-group-item-danger\" style=\"display: none;\">");
 	}
-	
+
 	ox_li.append(question + "</div>");
-	
 	ox_li.appendTo("#ox_table");
 }
 
 function showInfo(data, tabletop) {
 	var flags = {};
-	
-	const questions = tabletop.sheets("OX").all()
-		.reduce((a, ox) => a.concat({ Category: ox.Category, Question: ox.Question, Result: ox.Result }, { Category: ox.Category, Question: ox.Answer, Result: "O" }), [])
+
+	const questions = tabletop.sheets("MapleOx").all()
+		.reduce((a, ox) => a.concat({ Timestamp: ox.Timestamp, Question: ox.Question, Answer: ox.Answer }), [])
 		.filter((e) => {
 			if (flags[e.Question]) {
 				return false;
@@ -92,25 +91,26 @@ function showInfo(data, tabletop) {
 			
 			return true;
 		})
-		.sort(sort_by("Category", "Question", "Answer", "Result"));
-	
+		.sort(sort_by("Question", "Answer"));
+
 	$.each(questions, function(i, ox) {
-		addQuestion(ox.Question, ox.Result === "O");
+		addQuestion(ox.Question, ox.Answer === "TRUE");
 	});
 
+	setRefreshButtonTooltip(questions);
 	setEnabled(true);
 	focusSearchBar();
 }
 
 var refreshButtonTooltipFormat;
 function setRefreshButtonTooltip(questions) {
-	const $refreshButton = $("#ox_refresh_button");
+	const $refreshButton = $("#ox_search_button");
 	if (refreshButtonTooltipFormat === undefined ||
 		refreshButtonTooltipFormat === "") {
 		refreshButtonTooltipFormat = $refreshButton.attr("data-original-title");
 	}
 	
-	$refreshButton.attr("title", refreshButtonTooltipFormat.format(questions.length, questions.filter(q => q.Result === "O").length, questions.filter(q => q.Result === "X").length))
+	$refreshButton.attr("title", refreshButtonTooltipFormat.format(questions.length, questions.filter(q => q.Answer === "TRUE").length, questions.filter(q => q.Answer === "FALSE").length))
 				  .tooltip("_fixTitle");
 }
 
