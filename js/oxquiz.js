@@ -77,11 +77,12 @@ function addQuestion(question, result) {
 	ox_li.appendTo("#ox_table");
 }
 
+var lastTimeStamp
 function showInfo(data, tabletop) {
 	var flags = {};
 
 	const questions = tabletop.sheets("MapleOx").all()
-		.reduce((a, ox) => a.concat({ Question: ox.Question, Answer: ox.Answer }), [])
+		.reduce((a, ox) => a.concat({ Timestamp: ox.Timestamp, Question: ox.Question, Answer: ox.Answer }), [])
 		.filter((e) => {
 			if (flags[e.Question]) {
 				return false;
@@ -95,6 +96,7 @@ function showInfo(data, tabletop) {
 
 	$.each(questions, function(i, ox) {
 		addQuestion(ox.Question, ox.Answer === "TRUE");
+		lastTimeStamp = ox.Timestamp;
 	});
 
 	setRefreshButtonTooltip(questions);
@@ -110,7 +112,7 @@ function setRefreshButtonTooltip(questions) {
 		refreshButtonTooltipFormat = $refreshButton.attr("data-original-title");
 	}
 	
-	$refreshButton.attr("title", refreshButtonTooltipFormat.format(questions.length, questions.filter(q => q.Answer === "TRUE").length, questions.filter(q => q.Answer === "FALSE").length))
+	$refreshButton.attr("title", refreshButtonTooltipFormat.format(questions.length, questions.filter(q => q.Answer === "TRUE").length, questions.filter(q => q.Answer === "FALSE").length, lastTimeStamp))
 				  .tooltip("_fixTitle");
 }
 
