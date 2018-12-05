@@ -82,7 +82,10 @@ function showInfo(data, tabletop) {
 	var flags = {};
 
 	const questions = tabletop.sheets("MapleOx").all()
-		.reduce((a, ox) => a.concat({ Timestamp: ox.Timestamp, Question: ox.Question, Answer: ox.Answer }), [])
+	lastTimeStamp = questions[0]["LastEntry"]
+
+	questions
+		.reduce((a, ox) => a.concat({ Question: ox.Question, Answer: ox.Answer }), [])
 		.filter((e) => {
 			if (flags[e.Question]) {
 				return false;
@@ -96,7 +99,6 @@ function showInfo(data, tabletop) {
 
 	$.each(questions, function(i, ox) {
 		addQuestion(ox.Question, ox.Answer === "TRUE");
-		lastTimeStamp = ox.Timestamp;
 	});
 
 	setRefreshButtonTooltip(questions);
