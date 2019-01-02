@@ -1,16 +1,22 @@
 // https://stackoverflow.com/questions/6913512/how-to-sort-an-array-of-objects-by-multiple-fields
 
-function sort_by() {
+var sort_by;
+
+(function() {
     // utility functions
     var default_cmp = function(a, b) {
-        if (a == b) return 0;
-        return a < b ? -1 : 1;
-    },
+
+            a = a.replace(/<\/?[^>]+(>|$)/g, "");
+            b = b.replace(/<\/?[^>]+(>|$)/g, "");
+
+            return a === b ? 0 : a < b ? -1 : 1;
+        },
         getCmpFunc = function(primer, reverse) {
-            var cmp = default_cmp;
+            var dfc = default_cmp, // closer in scope
+                cmp = default_cmp;
             if (primer) {
                 cmp = function(a, b) {
-                    return default_cmp(primer(a), primer(b));
+                    return dfc(primer(a), primer(b));
                 };
             }
             if (reverse) {
@@ -44,21 +50,21 @@ function sort_by() {
             });
         }
 
+        // final comparison function
         return function(A, B) {
-            var a, b, name, cmp, result;
-            for (var i = 0, l = n_fields; i < l; i++) {
+            var a, b, name, result;
+            for (var i = 0; i < n_fields; i++) {
                 result = 0;
                 field = fields[i];
                 name = field.name;
-                cmp = field.cmp;
 
-                result = cmp(A[name], B[name]);
+                result = field.cmp(A[name], B[name]);
                 if (result !== 0) break;
             }
             return result;
         }
     }
-}
+}());
 
 String.prototype.format = String.prototype.f = function() {
     var s = this,

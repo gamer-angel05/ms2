@@ -85,6 +85,7 @@ function showInfo(data, tabletop) {
 	lastTimeStamp = questions[0]["LastEntry"]
 
 	questions
+		.sort(sort_by("Question"))
 		.reduce((a, ox) => a.concat({ Question: ox.Question, Answer: ox.Answer }), [])
 		.filter((e) => {
 			if (flags[e.Question]) {
@@ -95,7 +96,6 @@ function showInfo(data, tabletop) {
 			
 			return true;
 		})
-		.sort(sort_by("Question", "Answer"));
 
 	$.each(questions, function(i, ox) {
 		addQuestion(ox.Question, ox.Answer === "TRUE");
